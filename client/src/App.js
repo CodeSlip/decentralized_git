@@ -77,8 +77,8 @@ class App extends Component {
       projectCommits
     });
 
-    const commitMessages = await contract.methods.getCommitMessagesByProjectId(hardcodedProjectId).call();
-    console.log("commitmessages", commitMessages)
+    const commitTimestamps = await contract.methods.getCommitTimestampsByProjectId(hardcodedProjectId).call();
+    console.log("commitTimestamps", commitTimestamps)
 
     this.setState({
       projectName: decodedProjectName,
