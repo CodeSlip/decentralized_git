@@ -1,6 +1,14 @@
 .App {
   text-align: center;
 }
+.header{
+  background-color: #f4f4f4;
+  padding: 20px 15px;
+  text-align: left;
+}
+.container{
+  padding: 30px 0;
+}
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;

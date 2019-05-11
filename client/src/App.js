@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Jumbotron} from "reactstrap";
+import {Container} from "reactstrap";
 
 
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
@@ -62,17 +62,20 @@ class App extends Component {
     }
     return (
       <div className="App">
-        <h1>Good to Go!</h1>
-        <p>Your Truffle Box is installed and ready.</p>
-        <h2>Smart Contract Example</h2>
-        <p>
-          If your contracts compiled and migrated successfully, below will show
-          a stored value of 5 (by default).
-        </p>
-        <p>
-          Try changing the value stored on <strong>line 40</strong> of App.js.
-        </p>
-        <div>The stored value is: {this.state.storageValue}</div>
+        <div className="header"><h3>Welcome, User Name</h3></div>
+        <Container>
+          <h4>Repo Name</h4>
+          {/* <p>Your Truffle Box is installed and ready.</p>
+          <h2>Smart Contract Example</h2>
+          <p>
+            If your contracts compiled and migrated successfully, below will show
+            a stored value of 5 (by default).
+          </p>
+          <p>
+            Try changing the value stored on <strong>line 40</strong> of App.js.
+          </p>
+          <div>The stored value is: {this.state.storageValue}</div> */}
+        </Container>
       </div>
     );
   }
