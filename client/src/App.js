@@ -80,6 +80,7 @@ class App extends Component {
     const commitsById = await contract.methods.getCommitsByProjectId(hardcodedProjectId).call();
     console.log("commitsbyid", commitsById.map(c => web3.utils.toAscii(c)))
     let projectCommits = commitsById.map(c => web3.utils.toAscii(c));
+    
     this.setState({
       projectName: decodedProjectName,
       projectId: userProjectIds,
@@ -136,11 +137,13 @@ class App extends Component {
     return (
       <div className="App">
         <Navbar>
-          <h3>Code Hero</h3>
-          <p className="lead">Welcome, User Name</p>
+          <Container>
+            <h3>Code Hero</h3>
+            <p className="lead">Welcome, User Name</p>
+          </Container>
         </Navbar>
           
-        <Container>
+        <Container className="">
           <FormGroup >
             <Label className="text-left">Select Project</Label>
             <div className="flex project-list">
