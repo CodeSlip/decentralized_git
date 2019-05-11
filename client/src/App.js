@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 // import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import CodeHeroContract from "./contracts/Decentralize.json";
-import {Container, Input, Label, FormGroup, Navbar, NavbarBrand} from 'reactstrap'
+import {
+  Container,
+  Label, 
+  FormGroup, 
+  Navbar, 
+  Card,
+  CardBody,
+  CardTitle
+} from 'reactstrap'
 import getWeb3 from "./utils/getWeb3";
 
 // Components
@@ -115,11 +123,16 @@ class App extends Component {
     let projects = null;
     if(projectId){
       projects = projectId.map( (project, i) => {
-        return <option key={i}>{project}</option>
+        return (
+          <Card className="flex flex-center card-active" key={i}>
+            <div >
+              <p >
+                {project}
+              </p>
+            </div>
+          </Card>)
       })
     }
-  
-
     return (
       <div className="App">
         <Navbar>
@@ -128,19 +141,12 @@ class App extends Component {
         </Navbar>
           
         <Container>
-        <FormGroup style={{maxWidth: "400px"}}>
-          <Label className="text-left">Select Project</Label>
-          <Input 
-              type="select" 
-              name="projectSelected" 
-              value={projectSelected} 
-              onChange={this.handleChange}
-              required>
-               {projects}
-            </Input>
-        </FormGroup>
-        
-
+          <FormGroup >
+            <Label className="text-left">Select Project</Label>
+            <div className="flex project-list">
+              {projects}
+            </div>
+          </FormGroup>
           <div className="content">
             <ProjectData name={projectName} commits={projectCommits}/>
           </div>

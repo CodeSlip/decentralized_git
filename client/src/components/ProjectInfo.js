@@ -10,9 +10,9 @@ const ProjectInfo = (props) =>{
     let spotColor = '#' + Math.floor(Math.random()*16777215).toString(16);
 
     if(props.commits){
-        commits = props.commits.map(commit => {
+        commits = props.commits.map((commit, i) => {
             return(
-                <tr className="commit-card">
+                <tr key={i} className="commit-card">
                     <td>
                     <Blockies
                             seed="Jeremy" 
