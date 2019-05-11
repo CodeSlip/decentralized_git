@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import CodeHeroContract from "./contracts/Decentralize.json";
 import {
   Container,
@@ -35,8 +34,7 @@ class App extends Component {
       const web3 = await getWeb3();
 
       // Rinkeby testnet
-      const CodeHeroAddress = "0xB5cd647158dC909f60Ad134c61EB1A28d561CFD8";
-      // const simpleStorageAddress = "0x8143C17e682455CfADB88aa5E04A893261C6961C";
+      const CodeHeroAddress = "0x409eA381663d17Bf44efdEf5c1DB4f10a69cA3c9";
 
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
@@ -77,37 +75,35 @@ class App extends Component {
     const userProjectIds = await contract.methods.getProjectsByUserId(hardcodedUserAddress).call();
     console.log("userprojectIds", userProjectIds)
 
-    const commitsById = await contract.methods.getCommitsByProjectId(hardcodedProjectId).call();
-    console.log("commitsbyid", commitsById.map(c => web3.utils.toAscii(c)))
-    let projectCommits = commitsById.map(c => web3.utils.toAscii(c));
+    const commitMessagesById = await contract.methods.getCommitMessagesByProjectId(hardcodedProjectId).call();
+    console.log("commitsbyid", commitMessagesById.map(c => web3.utils.toAscii(c)))
+    let projectCommits = commitMessagesById.map(c => web3.utils.toAscii(c));
+
     this.setState({
       projectName: decodedProjectName,
       projectId: userProjectIds,
       projectCommits
+    });
+
+    const commitTimestamps = await contract.methods.getCommitTimestampsByProjectId(hardcodedProjectId).call();
+    console.log("commitTimestamps", commitTimestamps)
+
+    this.setState({
+      projectName: decodedProjectName,
+      projectId: userProjectIds,
+      // projectCommits: commitsById
     })
 
   }
 
-    // Listen for input changes
-    handleChange = (event) => {
-      console.log("changed",event.target)
-      this.setState({
-        [event.target.name] : event.target.value
-      })
-    }
+  // Listen for input changes
+  handleChange = (event) => {
+    console.log("changed",event.target)
+    this.setState({
+      [event.target.name] : event.target.value
+    })
+  }
 
-  // runExample = async () => {
-  //   const { accounts, contract } = this.state;
-
-  //   // Stores a given value, 5 by default.
-  //   await contract.methods.set(5).send({ from: accounts[0] });
-
-  //   // Get the value from the contract to prove it worked.
-  //   const response = await contract.methods.get().call();
-
-  //   // Update state with the result.
-  //   this.setState({ storageValue: response });
-  // };
 
   render() {
     const {
@@ -153,21 +149,7 @@ class App extends Component {
         </Container>
       </div>
     )
-    // return (
-    //   <div className="App">
-    //     <h1>Good to Go!</h1>
-    //     <p>Your Truffle Box is installed and ready.</p>
-    //     <h2>Smart Contract Example</h2>
-    //     <p>
-    //       If your contracts compiled and migrated successfully, below will show
-    //       a stored value of 5 (by default).
-    //     </p>
-    //     <p>
-    //       Try changing the value stored on <strong>line 40</strong> of App.js.
-    //     </p>
-    //     <div>The stored value is: {this.state.storageValue}</div>
-    //   </div>
-    // );
+
   }
 }
 

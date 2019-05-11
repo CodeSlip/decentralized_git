@@ -6,12 +6,15 @@ contract Decentralize {
   mapping(uint => bytes32) projectIdToName;
   mapping(uint => address) projectIdToOwner;
   mapping(uint => bytes32) projectIdToIPFSHash;
-  mapping(uint => bytes32[]) projectIdToCommits;
+
+  mapping(uint => bytes32[]) projectIdToCommitMessages;
+  mapping(uint => uint[]) projectIdToCommitTimestamps;
 
   mapping(uint => address[]) projectIdToUsers;
   mapping(uint => mapping(address => bool)) projectPermissions; // projectId => (userAddress => bool) ...does user have permission?
 
-  mapping(address => uint[]) userIdToProjects;
+  mapping(address => uint[]) addressToProjects;
+  mapping(address => bytes32) addressToUsername;
 
   event ProjectCreated(address indexed _creator, uint _projectId, bytes32 _name);
   event UserInvited(address indexed _invitee, address _inviter, uint _projectId);
@@ -34,7 +37,7 @@ contract Decentralize {
     projectIdToUsers[projectId].push(msg.sender);
     projectIdToOwner[projectId] = msg.sender;
 
-    userIdToProjects[msg.sender].push(projectId);
+    addressToProjects[msg.sender].push(projectId);
 
     emit ProjectCreated(msg.sender, projectId++, _name);
   }
@@ -43,17 +46,23 @@ contract Decentralize {
     projectPermissions[_projectId][_teammate] = true;
     projectIdToUsers[_projectId].push(_teammate);
 
-    userIdToProjects[_teammate].push(projectId);
+    addressToProjects[_teammate].push(projectId);
     
     emit UserInvited(_teammate, msg.sender, _projectId);
   }
 
   // updates projectId => IPFShash pointer
-  function submitCode(uint _projectId, bytes32 _newHash, bytes32 _commitMessage) public onlyPermissionedUsers(_projectId){
+  function commitCode(uint _projectId, bytes32 _newHash, bytes32 _commitMessage) public onlyPermissionedUsers(_projectId){
     projectIdToIPFSHash[_projectId] = _newHash;
-    projectIdToCommits[_projectId].push(_commitMessage);
+    projectIdToCommitMessages[_projectId].push(_commitMessage);
+    projectIdToCommitTimestamps[_projectId].push(block.timestamp);
 
     emit Commit(_projectId, msg.sender, _commitMessage);
+  }
+
+  // Add Profile Info
+  function addUsername(bytes32 _username) public {
+    addressToUsername[msg.sender] = _username;
   }
 
   // Getter functions
@@ -65,12 +74,20 @@ contract Decentralize {
     return projectIdToName[_projectId];
   }
 
-  function getCommitsByProjectId(uint _projectId) public view returns(bytes32[] memory commits) {
-    return projectIdToCommits[_projectId];
+  function getCommitMessagesByProjectId(uint _projectId) public view returns(bytes32[] memory commits) {
+    return projectIdToCommitMessages[_projectId];
+  }
+
+  function getCommitTimestampsByProjectId(uint _projectId) public view returns(uint[] memory timestamps){
+    return projectIdToCommitTimestamps[_projectId];
   }
 
   function getProjectsByUserId(address _user) public view returns(uint[] memory projectIds){
-    return userIdToProjects[_user];
+    return addressToProjects[_user];
+  }
+
+  function getUsernameByAddress(address _address) public view returns(bytes32){
+    return addressToUsername[_address];
   }
 
 }
