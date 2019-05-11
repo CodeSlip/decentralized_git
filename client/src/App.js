@@ -1,13 +1,25 @@
 import React, { Component } from "react";
 // import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import CodeHeroContract from "./contracts/Decentralize.json";
-import {Container} from 'reactstrap'
+import {Container, Input, Label, FormGroup} from 'reactstrap'
 import getWeb3 from "./utils/getWeb3";
+
+// Components
+import Commits from './components/Commits'
 
 import "./App.css";
 
 class App extends Component {
-  state = { web3: null, accounts: null, contract: null };
+  constructor(props){
+    super(props);
+    this.state = { 
+      web3: null, 
+      accounts: null, 
+      contract: null,
+      projectSelected: null };
+
+    this.handleChange = this.handleChange.bind(this);   
+  }
 
   componentDidMount = async () => {
     try {
@@ -59,14 +71,22 @@ class App extends Component {
 
     const commitsById = await contract.methods.getCommitsByProjectId(hardcodedProjectId).call();
     console.log("commitsbyid", commitsById.map(c => web3.utils.toAscii(c)))
-
+    let projectCommits = commitsById.map(c => web3.utils.toAscii(c));
     this.setState({
       projectName: decodedProjectName,
       projectId: userProjectIds,
-      projectCommits: commitsById
+      projectCommits
     })
 
   }
+
+    // Listen for input changes
+    handleChange = (event) => {
+      console.log("changed",event.target)
+      this.setState({
+        [event.target.name] : event.target.value
+      })
+    }
 
   // runExample = async () => {
   //   const { accounts, contract } = this.state;
@@ -85,28 +105,44 @@ class App extends Component {
     const {
       projectName,
       projectId,
-      projectCommits
+      projectCommits,
+      projectSelected
      } = this.state;
-
+     console.log(projectSelected)
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
 
-    // let commits = projectCommits.map( commit => {
-    //   console.log(commit)
-    //   return(
-    //     <p></p>
-    //   )
-    // })
+    let projects = null;
+    if(projectId){
+      projects = projectId.map( (project, i) => {
+        return <option key={i}>{project}</option>
+      })
+    }
+  
 
     return (
       <div className="App">
-        <div className="header"><h3>Welcome, User Name</h3></div>
+        <div className="header">
+          <h3>Welcome, User Name</h3>
+        </div>
         <Container>
-          <h4 className="repo-name">{projectName}</h4>
+        <FormGroup style={{maxWidth: "400px"}}>
+          <Label className="text-left">Select Project</Label>
+          <Input 
+              type="select" 
+              name="projectSelected" 
+              value={projectSelected} 
+              onChange={this.handleChange}
+              required>
+               {projects}
+            </Input>
+        </FormGroup>
+        
+
           <div className="content">
+            <Commits name={projectName} commits={projectCommits}/>
           </div>
-  
         </Container>
       </div>
     )
