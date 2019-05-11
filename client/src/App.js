@@ -5,7 +5,7 @@ import {Container, Input, Label, FormGroup, Navbar, NavbarBrand} from 'reactstra
 import getWeb3 from "./utils/getWeb3";
 
 // Components
-import ProjectData from './components/ProjectInfo'
+import ProjectData from './components/ProjectInfo';
 
 import "./App.css";
 
