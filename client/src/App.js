@@ -5,7 +5,7 @@ import {Container, Input, Label, FormGroup} from 'reactstrap'
 import getWeb3 from "./utils/getWeb3";
 
 // Components
-import Commits from './components/Commits'
+import ProjectData from './components/ProjectInfo'
 
 import "./App.css";
 
@@ -108,7 +108,6 @@ class App extends Component {
       projectCommits,
       projectSelected
      } = this.state;
-     console.log(projectSelected)
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
@@ -141,7 +140,7 @@ class App extends Component {
         
 
           <div className="content">
-            <Commits name={projectName} commits={projectCommits}/>
+            <ProjectData name={projectName} commits={projectCommits}/>
           </div>
         </Container>
       </div>
