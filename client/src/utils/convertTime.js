@@ -12,7 +12,8 @@ const unixToRegTimeConvert = unixTimestamp => {
   const hour = 24 - t.getHours(); // adjust to 24 hours
   const mins = t.getMinutes();
   const sec = t.getSeconds();
-  const time = `${day}, ${date} ${month} ${year} ${hour}:${mins}:${sec}`;
+  const pmOrAm = t.getHours() > 12 ? 'PM' : 'AM';
+  const time = `${day} ${month} ${date}, ${year} at ${hour}:${mins}:${sec} ${pmOrAm}`;
 
   return time;
 }
