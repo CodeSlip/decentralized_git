@@ -30,11 +30,12 @@ contract Decentralize {
     projectPermissions[_projectId][_teammate] = true;
   }
 
-  // updates projectId => IPFS hash pointer
+  // updates projectId => IPFShash pointer
   function submitCode(uint _projectId, bytes32 _newHash, bytes32 _commitMessage) public onlyPermissionedUsers(_projectId){
     projectIdToIPFSHash[_projectId] = _newHash;
-    emit Event(_projectId, msg.sender, _commitMessage)
+    emit Commit(_projectId, msg.sender, _commitMessage);
   }
+  
 
 
 }
