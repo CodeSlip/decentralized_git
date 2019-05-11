@@ -67,9 +67,10 @@ class App extends Component {
     const userProjectIds = await contract.methods.getProjectsByUserId(hardcodedUserAddress).call();
     console.log("userprojectIds", userProjectIds)
 
-    const commitsById = await contract.methods.getCommitsByProjectId(hardcodedProjectId).call();
-    console.log("commitsbyid", commitsById.map(c => web3.utils.toAscii(c)))
-    let projectCommits = commitsById.map(c => web3.utils.toAscii(c));
+    const commitMessagesById = await contract.methods.getCommitMessagesByProjectId(hardcodedProjectId).call();
+    console.log("commitsbyid", commitMessagesById.map(c => web3.utils.toAscii(c)))
+    let projectCommits = commitMessagesById.map(c => web3.utils.toAscii(c));
+
     this.setState({
       projectName: decodedProjectName,
       projectId: userProjectIds,
@@ -78,9 +79,6 @@ class App extends Component {
 
     const commitMessages = await contract.methods.getCommitMessagesByProjectId(hardcodedProjectId).call();
     console.log("commitmessages", commitMessages)
-
-    const commitTimestamps = await contract.methods.getCommitTimestampsByProjectId(hardcodedProjectId).call();
-    console.log("timestamps", commitTimestamps)
 
     this.setState({
       projectName: decodedProjectName,
