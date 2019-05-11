@@ -1,0 +1,37 @@
+{
+  "name": "codehero",
+  "version": "1.0.0",
+  "description": "a decentralized code repository to enable developers to safely and securely collaborate. Our decentralized code repository, minimizes risks of censorship and single fault failures.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeSlip/decentralized_git.git"
+  },
+  "keywords": [
+    "distributed",
+    "repository",
+    "blockchain",
+    "developer",
+    "tools",
+    "cli",
+    "reactjs"
+  ],
+  "author": "Consensus Hackathon Team HackStars",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CodeSlip/decentralized_git/issues"
+  },
+  "homepage": "https://github.com/CodeSlip/decentralized_git#readme",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "figlet": "^1.2.1",
+    "inquirer": "^6.3.1",
+    "shelljs": "^0.8.3"
+  },
+  "bin": {
+    "codehero": "./index.js"
+  }
+}
