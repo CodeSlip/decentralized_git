@@ -124,7 +124,7 @@ class App extends Component {
     if(projectId){
       projects = projectId.map( (project, i) => {
         return (
-          <Card className="flex flex-center" key={i}>
+          <Card className="flex flex-center card-active" key={i}>
             <div >
               <p >
                 {project}
@@ -141,9 +141,9 @@ class App extends Component {
         </Navbar>
           
         <Container>
-          <FormGroup style={{maxWidth: "400px"}}>
+          <FormGroup >
             <Label className="text-left">Select Project</Label>
-            <div className="flex">
+            <div className="flex project-list">
               {projects}
             </div>
           </FormGroup>

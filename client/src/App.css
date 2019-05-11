@@ -32,8 +32,7 @@
 }
 
 
-
-
+/* Template */
 .navbar{
   background-color: #f4f4f4;
   padding: 15px 20px;
@@ -45,18 +44,31 @@
 }
 
 .content{
-
   margin: 50px 0;
 }
 
+.flex{
+  display: flex;
+  flex-wrap: wrap;
+}
 
+.flex-center{
+  justify-content: center;
+  align-items: center;
+}
+
+.text-bold{
+  font-weight: 700;
+}
+
+/* Project Table */
 .repo-name{
   text-align: left;
   font-weight: 700;
 }
 
 .commit-card{
-  border-radius: .25rem;
+  border-radius: 8px;
   box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.21);
   margin: 10px;
 }
@@ -69,30 +81,32 @@
   margin: 0;
 }
 
-
+/* Project List Card */
 .card{
-  width: 150px;
+  width: 25%;
   cursor: pointer;
   padding: 20px 15px;
-  height: 80px;
+  height: 25%;
+  border-radius: 8px;
 }
-.card:hover{
-  border-radius: 3px;
-  box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.21);
 
+.card:hover{
+  box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.21);
 }
+
 .card p{
   margin: 0;
   line-height: 1;
 }
 
-.flex{
-  display: flex;
-  flex-wrap: wrap;
+.card-active{
+  box-shadow: 1px 1px 8px  #80bdff;
 }
-.flex-center{
-  justify-content: center;
-  align-items: center;
+
+
+.project-list{
+  width: 100%;
+  margin: 20px 0;
 }
 
 
