@@ -14,10 +14,12 @@ contract Decentralize {
 
   modifier onlyOwner(uint _projectId){
     require(projectIdToOwner[_projectId] == msg.sender, "Sorry, only project owner can send invitations.");
+    _;
   }
 
   modifier onlyPermissionedUsers(uint _projectId){
     require(projectPermissions[_projectId][msg.sender] == true, "Sorry, only permissioned users can submit code");
+    _;
   }
 
   function createProject(bytes32 _name) public {
