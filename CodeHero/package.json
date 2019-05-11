@@ -27,9 +27,11 @@
   "homepage": "https://github.com/CodeSlip/decentralized_git#readme",
   "dependencies": {
     "chalk": "^2.4.2",
+    "ethereumjs-tx": "^1.3.7",
     "figlet": "^1.2.1",
     "inquirer": "^6.3.1",
-    "shelljs": "^0.8.3"
+    "shelljs": "^0.8.3",
+    "web3": "^1.0.0-beta.55"
   },
   "bin": {
     "codehero": "./index.js"
