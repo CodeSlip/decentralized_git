@@ -56,7 +56,7 @@
 }
 
 .commit-card{
-  border-radius: 3px;
+  border-radius: .25rem;
   box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.21);
   margin: 10px;
 }
@@ -66,8 +66,37 @@
   margin: auto;
 }
 .username{
-  margin: 0
+  margin: 0;
 }
+
+
+.card{
+  width: 150px;
+  cursor: pointer;
+  padding: 20px 15px;
+  height: 80px;
+}
+.card:hover{
+  border-radius: 3px;
+  box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.21);
+
+}
+.card p{
+  margin: 0;
+  line-height: 1;
+}
+
+.flex{
+  display: flex;
+  flex-wrap: wrap;
+}
+.flex-center{
+  justify-content: center;
+  align-items: center;
+}
+
+
+
 
 
 
