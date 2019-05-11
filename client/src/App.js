@@ -23,7 +23,9 @@ class App extends Component {
       web3: null, 
       accounts: null, 
       contract: null,
-      projectSelected: null };
+      projectSelected: null,
+      CodeHeroAddress: "0x409eA381663d17Bf44efdEf5c1DB4f10a69cA3c9" 
+    };
 
     this.handleChange = this.handleChange.bind(this);   
   }
@@ -34,7 +36,7 @@ class App extends Component {
       const web3 = await getWeb3();
 
       // Rinkeby testnet
-      const CodeHeroAddress = "0x409eA381663d17Bf44efdEf5c1DB4f10a69cA3c9";
+      const CodeHeroAddress = this.state.CodeHeroAddress;
 
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
@@ -47,20 +49,18 @@ class App extends Component {
         CodeHeroAddress,
       );
 
-
-      // Set web3, accounts, and contract to the state, and then proceed with an
-      // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance }, this.getContractFeeds);
+      this.setState({ web3, accounts, contract: instance }, this.getContractFeeds)
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
         `Failed to load web3, accounts, or contract. Check console for details.`,
-      );
-      console.error(error);
-    }
-  };
-
+        );
+        console.error(error);
+      }
+    };
+    
   getContractFeeds = async() => {
+    this.listenForEvents();
     const { accounts, contract, web3 } = this.state;
     
     // Just so user address has data, until we assign this to eth.accounts[0] 
@@ -94,6 +94,22 @@ class App extends Component {
       // projectCommits: commitsById
     })
 
+  }
+
+  listenForEvents = async() => {
+    const { accounts, contract, web3, CodeHeroAddress } = this.state;
+
+    contract.once('ProjectCreated', (err, result) => {
+      console.log("** Project Created ** ", result)
+    })
+
+    contract.once('UserInvited', (err, result) => {
+      console.log("** User Invited ** ", result)
+    })
+
+    contract.once('Commit', (err, result) => {
+      console.log("** Code Committed ** ", result)
+    })
   }
 
   // Listen for input changes
