@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import CodeHeroContract from "./contracts/Decentralize.json";
-import {Container, Input, Label, FormGroup} from 'reactstrap'
+import {Container, Input, Label, FormGroup, Navbar, NavbarBrand} from 'reactstrap'
 import getWeb3 from "./utils/getWeb3";
 
 // Components
@@ -122,9 +122,11 @@ class App extends Component {
 
     return (
       <div className="App">
-        <div className="header">
-          <h3>Welcome, User Name</h3>
-        </div>
+        <Navbar>
+          <h3>Code Hero</h3>
+          <p className="lead">Welcome, User Name</p>
+        </Navbar>
+          
         <Container>
         <FormGroup style={{maxWidth: "400px"}}>
           <Label className="text-left">Select Project</Label>

@@ -8,7 +8,8 @@ const ProjectInfo = (props) =>{
         commits = props.commits.map(commit => {
             return(
                 <tr>
-                    <th>{commit}</th>
+                    <td>users</td>
+                    <td>{commit}</td>
                     <td>description</td>
                 </tr>
             )
@@ -22,7 +23,8 @@ const ProjectInfo = (props) =>{
             <Table>
                 <thead>
                     <tr>
-                        <th>Commits</th>
+                        <th style={{width: "80px"}}>Users</th>
+                        <th style={{width: "25%"}}>Commits</th>
                         <th>Description</th>
                     </tr>
                 </thead>

@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
 }
 
 .App-logo {
@@ -34,9 +34,9 @@
 
 
 
-.header{
+.navbar{
   background-color: #f4f4f4;
-  padding: 20px 15px;
+  padding: 15px 20px;
   text-align: left;
 }
 
