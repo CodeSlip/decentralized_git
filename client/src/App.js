@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import {Jumbotron} from "reactstrap";
+
+
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./utils/getWeb3";
 
@@ -23,6 +26,7 @@ class App extends Component {
         deployedNetwork && deployedNetwork.address,
       );
 
+
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
       this.setState({ web3, accounts, contract: instance }, this.runExample);
@@ -37,7 +41,7 @@ class App extends Component {
 
   runExample = async () => {
     const { accounts, contract } = this.state;
-
+    console.log(accounts)
     // Stores a given value, 5 by default.
     await contract.methods.set(5).send({ from: accounts[0] });
 
