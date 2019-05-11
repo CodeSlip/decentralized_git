@@ -55,5 +55,19 @@
   font-weight: 700;
 }
 
+.commit-card{
+  border-radius: 3px;
+  box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.21);
+  margin: 10px;
+}
+
+.identicon{
+  display: block;
+  margin: auto;
+}
+.username{
+  margin: 0
+}
+
 
 
