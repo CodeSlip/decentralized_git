@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const axios = require ('axios');
 const chalk = require("chalk");
 const figlet = require("figlet");
 const fs = require('fs');
@@ -8,7 +9,7 @@ const Tx = require('ethereumjs-tx')
 const IPFS = require('ipfs-api');
 const FileReader = require('filereader');
 const Buffer = require('safe-buffer');
-const alloc = require('buffer-alloc')
+const alloc = require('buffer-alloc');
 
 const ipfs = new IPFS({host:'ipfs.infura.io', port:'5001', protocol:'https'});
 const web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/v3/1bbaf6af867f4c289cae07c220e77a10'));
@@ -16,6 +17,7 @@ const addressFrom = '0xA53EEf10271C5456a377f1A5D39b4961ba8C83D5';
 const privKey = '3ADFC1DA4DE404677C7800CE3F71BE423F56459EFAFFD5DAA612F1915F77E5C6';
 const addressTo = '0xcC4c3FBfA2716D74B3ED6514ca8Ba99d7f941dF9'; 
 let storedHash = null;
+const ipfsUrl = 'https://ipfs.infura.io:5001/api/v0/add?pin=false';
 
 const init = () => {
     console.log(
@@ -76,18 +78,29 @@ init();
 let directory = process.cwd();
 let files = `${directory}/READ.ME`;
 let bufferedFile = alloc(10, files)
+let ipfsData = {
+    'cid-version': 0,
+    'file': `/${directory}/READ.ME`
+}
+axios({
+    method: 'post',
+    url: ipfsUrl,
+    data: {
+        file: '@'+`${files}`
+    }
+}).then(data=> console.log(data)).catch(err => console.log(err))
 // let reader = new FileReader();
 // let bufferedFile;
 // reader.readAsArrayBuffer(file);
 // reader.onloadend = () => {
 //     bufferedFile = Buffer.from(reader.result);
 // }
-ipfs.add(bufferedFile, (err, ipfsHash) => {
-    console.log(err, ipfsHash);
-    //setState by setting ipfsHash to ipfsHash[0].hash 
-    storedHash = ipfsHash[0].hash;
-    })
-console.log(storedHash);
+// ipfs.add(bufferedFile, (err, ipfsHash) => {
+//     // console.log(err, ipfsHash);
+//     //setState by setting ipfsHash to ipfsHash[0].hash 
+//     storedHash = ipfsHash[0].hash;
+//     })
+//     console.log(storedHash);
 // web3.eth.getTransactionCount(addressFrom).then(txCount => {
 //     // construct the transaction data
 //     const txData = {
