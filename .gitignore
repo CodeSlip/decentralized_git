@@ -1,3 +1,7 @@
 /node_modules
 /client/node_modules
 client/src/contracts/
+
+.DS_Store
+client/.DS_Store
+client/src/.DS_Store
