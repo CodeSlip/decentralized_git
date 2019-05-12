@@ -39,7 +39,7 @@ const ProjectInfo = (props) =>{
             }
 
             return(
-                <tr key={i} className="commit-card">
+                <tr key={i} className={`commit-card ${i === 0 && props.newCommitUpdate ? 'commit-card-flash' : ''}`}>
                     <td>
                     <Blockies
                             seed={`${[names[i]]}`} 
