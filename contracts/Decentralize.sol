@@ -90,4 +90,8 @@ contract Decentralize {
     return addressToUsername[_address];
   }
 
+  function getIPFSHashByProjectId(uint _projectId) public view returns(bytes32){
+    return projectIdToIPFSHash[_projectId];
+  }
+
 }

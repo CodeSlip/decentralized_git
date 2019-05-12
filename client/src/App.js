@@ -23,7 +23,8 @@ class App extends Component {
       accounts: null, 
       contract: null,
       projectSelected: null,
-      projectIdSelected: null
+      projectIdSelected: null,
+      CodeHeroAddress: "0x2aD97B528791d6d165e9CF2D5ba85F685Bb11E1c" 
     };
     this.onClickSelected = this.onClickSelected.bind(this)
 
@@ -97,6 +98,7 @@ class App extends Component {
     const commitMessagesById = await contract.methods.getCommitMessagesByProjectId(this.state.projectIdSelected).call();
     
     let projectCommits = commitMessagesById.map(c => web3.utils.toAscii(c));
+  
 
     const commitTimestamps = await contract.methods.getCommitTimestampsByProjectId(this.state.projectIdSelected).call();
 
@@ -113,9 +115,22 @@ class App extends Component {
       commitMessagesById,
       userName
     });
+
+
+    contract.once('ProjectCreated', (err, result) => {
+      console.log("** Project Created ** ", result)
+    })
+
+    contract.once('UserInvited', (err, result) => {
+      console.log("** User Invited ** ", result)
+    })
+
+    contract.once('Commit', (err, result) => {
+      console.log("** Code Committed ** ", result)
+    })
+
+    console.log("web3", await web3.eth.accounts.wallet)
   }
-
-
   
   onClickSelected = (projectSelected) => {
     this.setState=({
