@@ -36,7 +36,7 @@ class App extends Component {
       const web3 = await getWeb3();
 
       // Rinkeby testnet
-      const CodeHeroAddress = "0x409eA381663d17Bf44efdEf5c1DB4f10a69cA3c9";
+      const CodeHeroAddress = this.state.CodeHeroAddress;
 
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
