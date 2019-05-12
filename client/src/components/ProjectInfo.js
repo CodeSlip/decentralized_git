@@ -24,8 +24,12 @@ const ProjectInfo = (props) =>{
     
     if(props.commits ){
         console.log(props.commits);
-        let commitsRev = props.commits.reverse()
+        let commitsRev = props.commits.reverse();
+        
         commits = props.commits.map((commit, i) => {
+            let color = '#' + Math.floor(Math.random()*16777215).toString(16);
+            let bgColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+            let spotColor = '#' + Math.floor(Math.random()*16777215).toString(16);
             const id = web3.utils.fromAscii(commit).slice(7, 13);
             if(renderedCommits.includes(id)){
                 return;
