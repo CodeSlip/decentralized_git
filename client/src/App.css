@@ -85,6 +85,9 @@
   box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.21);
   margin: 10px;
 }
+.commit-card td{
+  vertical-align: middle;
+}
 
 .identicon{
   display: block;
@@ -105,7 +108,7 @@
 }
 
 .card:hover{
-  box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.21);
+  box-shadow: 1px 1px 8px #68DAA6;
 }
 
 .card p{

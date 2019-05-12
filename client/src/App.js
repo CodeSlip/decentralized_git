@@ -6,6 +6,7 @@ import {
   FormGroup, 
   Navbar, 
   Card,
+  Input
 
 } from 'reactstrap'
 import getWeb3 from "./utils/getWeb3";
@@ -22,9 +23,9 @@ class App extends Component {
       web3: null, 
       accounts: null, 
       contract: null,
-      projectSelected: null };
+      projectSelected: null,
+    };
 
-    this.handleChange = this.handleChange.bind(this);   
   }
 
   componentDidMount = async () => {
@@ -59,13 +60,14 @@ class App extends Component {
     }
   };
 
-  getContractFeeds = async() => {
-    const { accounts, contract, web3 } = this.state;
-    
+  getContractFeeds = async () => {
+    const { accounts, contract, web3 } = this.state;  
     // Just so user address has data, until we assign this to eth.accounts[0] 
     const hardcodedUserAddress = "0xcC4c3FBfA2716D74B3ED6514ca8Ba99d7f941dF9"
     const hardcodedProjectId = "1";
     console.log("contract", contract)
+
+    console.log(this.state.projectSelected)
 
     const hardcodedProjectName = await contract.methods.getNameByProjectId(hardcodedProjectId).call();
     const decodedProjectName = web3.utils.toAscii(hardcodedProjectName).trim();
@@ -88,55 +90,55 @@ class App extends Component {
     const userData = await contract.methods.getUsernameByAddress(hardcodedUserAddress).call();
     const userName =  web3.utils.toAscii(userData);
 
+    let projectSelected = null;
+    if(this.state.projectSelected == null){
+      projectSelected = userProjectIds[0]
+      this.setState({
+        projectSelected
+      })
+  }
+  this.setState({
+    projectName: decodedProjectName,
+    projectId: userProjectIds,
+    projectCommits,
+    commitTimestamps,
+    commitMessagesById,
+    userName
+  });
 
-    this.setState({
-      projectName: decodedProjectName,
-      projectId: userProjectIds,
-      projectCommits,
-      commitTimestamps,
-      commitMessagesById,
-      userName,
-
-    });
 
   }
 
-  // Listen for input changes
-  handleChange = (event) => {
-    console.log("changed",event.target)
-    this.setState({
-      [event.target.name] : event.target.value
-    })
+
+  
+  onClickSelected = (projectSelected) => {
+    this.setState=({
+      projectSelected
+    },() => {
+      console.log("after",this.state.projectSelected);
+  });
+    this.getContractFeeds()
+    console.log("clicked")
   }
 
 
   render() {
-    const {
+    let {
       projectName,
       projectId,
       projectCommits,
       projectSelected,
       userName,
       commitTimestamps,
-      commitMessagesById
+      commitMessagesById,
      } = this.state;
+
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
-
     let projects = null;
-    if(projectId){
-      projects = projectId.map( (project, i) => {
-        return (
-          <Card className="flex flex-center " key={i}>
-            <div>
-              <p>
-                {project}
-              </p>
-            </div>
-          </Card>)
-      })
-    }
+
+
     return (
       <div className="App">
         <Navbar>
@@ -149,12 +151,28 @@ class App extends Component {
         <Container className="main">
           <FormGroup >
             <Label className="text-left text-bold">Select Project</Label>
-            <div className="flex project-list">
-              {projects}
+            <div >
+              
+   { projectId ?
+      <div className="flex project-list">
+      {projectId.map( (project, i) => 
+          <Card 
+            className={"flex flex-center" + (projectSelected == project ? ' card-active' : "")} 
+            onClick={() => this.onClickSelected(project)}
+            key={i}>
+            <div>
+              <p>
+                {project} 
+              </p>
+            </div>
+          </Card>
+      )}
+      </div>
+    : null}
             </div>
           </FormGroup>
           <div className="content">
-            <ProjectData name={projectName} commits={projectCommits} dates={commitTimestamps} />
+            <ProjectData selectedId={projectSelected} name={projectName} commits={projectCommits} dates={commitTimestamps} />
           </div>
         </Container>
       </div>
