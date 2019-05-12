@@ -9,7 +9,7 @@ const unixToRegTimeConvert = unixTimestamp => {
   const month = months[t.getMonth()];
   const date = t.getDate();
   const year = t.getYear() + 1900; // adjust to julian calendar?
-  const hour = t.getHours(); // adjust to 24 hours
+  const hour = t.getHours() > 12 ? t.getHours() - 12 : t.getHours();
   let mins = String(t.getMinutes()).length === 1 ? '0' + String(t.getMinutes()) : String(t.getMinutes());
   let sec = String(t.getSeconds()).length === 1 ? '0' + String(t.getSeconds()) : String(t.getSeconds());
 
