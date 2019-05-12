@@ -2,7 +2,9 @@ import React from 'react';
 import {Table} from 'reactstrap';
 import Blockies from 'react-blockies';
 import convertTime from '../utils/convertTime'
+import ColoredLine from './ColoredLine';
 
+import web3 from "web3";
 
 const ProjectInfo = (props) =>{
     let commits = null;
@@ -11,20 +13,19 @@ const ProjectInfo = (props) =>{
     let spotColor = '#' + Math.floor(Math.random()*16777215).toString(16);
 
     let commitDate = null;
-    let messages = null;
 
     if(props.dates){
-        commitDate = props.dates.map( date => {
+        commitDate = props.dates.reverse().map( date => {
             return convertTime(date);
         })
     }
-    if(props.messages){
-        messages = props.messages;
-    }
-
-
+    
+    
     if(props.commits ){
-        commits = props.commits.map((commit, i) => {
+        console.log(props.commits);
+        let commitsRev = props.commits.reverse()
+        commits = commitsRev.map((commit, i) => {
+            const id = web3.utils.fromAscii(commit).slice(7, 13);
             return(
                 <tr key={i} className="commit-card">
                     <td>
@@ -39,10 +40,9 @@ const ProjectInfo = (props) =>{
                         />
                         <p className="text-center username">name</p>
                     </td>
+                    <td>#{id}</td>
                     <td>{commit}</td>
-                    <td>{messages[i]}</td>
                     <td>{commitDate[i]}</td>
-
                 </tr>
             )
         })
@@ -56,17 +56,14 @@ const ProjectInfo = (props) =>{
                 <thead>
                     <tr>
                         <th style={{width: "80px"}}>Users</th>
-                        <th style={{width: "25%"}}>Commits</th>
+                        <th style={{width: "25%"}}>Commit</th>
                         <th>Description</th>
                         <th>Date</th>
-
                     </tr>
                 </thead>
                 <tbody>
                     {commits}
                 </tbody>
-
-
             </Table>
         </div>
     )
