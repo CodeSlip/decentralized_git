@@ -13,14 +13,24 @@ html {
   height: 40vmin;
 }
 
+.logo-div {
+
+}
+
+.logo-img {
+  width: 30px;
+  height: auto;
+  float: left;
+}
+
 .logo{
-  font-family:   "Courier New",
-  monospace;
+  font-family:   "Courier New", monospace;
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-shadow: 1px 1px 1px #282c34;
   font-size: 1.75em;
+  float: right;
 }
 
 .App-header {
@@ -140,7 +150,6 @@ html {
 .card-inactive {
   color: black;
 }
-
 
 .project-list{
   width: 100%;

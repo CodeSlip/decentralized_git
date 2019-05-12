@@ -186,7 +186,10 @@ class App extends Component {
       <div className="App">
         <Navbar>
           <Container>
-            <h3 className="logo">Code Hero</h3>
+            <div className="logo-div">
+              <img className="logo-img" src="shield.png" />
+              <h3 className="logo">Code Hero</h3>
+            </div>
             <p className="lead">Welcome, {userName}</p>
           </Container>
         </Navbar>

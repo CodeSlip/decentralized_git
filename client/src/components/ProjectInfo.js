@@ -40,7 +40,7 @@ const ProjectInfo = (props) =>{
                         />
                         <p className="text-center username">name</p>
                     </td>
-                    <td>{id}</td>
+                    <td>#{id}</td>
                     <td>{commit}</td>
                     <td>{commitDate[i]}</td>
                 </tr>
@@ -65,7 +65,6 @@ const ProjectInfo = (props) =>{
                     {commits}
                 </tbody>
             </Table>
-            <ColoredLine color='#fff'/>
         </div>
     )
 
