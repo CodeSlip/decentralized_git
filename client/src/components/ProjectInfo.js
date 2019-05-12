@@ -15,7 +15,7 @@ const ProjectInfo = (props) =>{
     let commitDate = null;
 
     if(props.dates){
-        commitDate = props.dates.map( date => {
+        commitDate = props.dates.reverse().map( date => {
             return convertTime(date);
         })
     }
