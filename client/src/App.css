@@ -1,5 +1,11 @@
+html {
+  background: black;
+}
+
 .App {
   /* text-align: center; */
+  background: black;
+  color: white;
 }
 
 .App-logo {
@@ -40,7 +46,6 @@
   }
 }
 
-
 /* Template */
 .navbar{
   background-color: #68DAA6;
@@ -72,6 +77,10 @@
 
 .text-bold{
   font-weight: 700;
+}
+
+.table {
+  color: white;
 }
 
 /* Project Table */
@@ -122,6 +131,10 @@
   color: #fff;
   font-weight: 700;
   font-size: 18px;
+}
+
+.card-inactive {
+  color: black;
 }
 
 

@@ -65,27 +65,23 @@ class App extends Component {
     // Just so user address has data, until we assign this to eth.accounts[0] 
     const hardcodedUserAddress = "0xcC4c3FBfA2716D74B3ED6514ca8Ba99d7f941dF9"
     const hardcodedProjectId = "1";
-    console.log("contract", contract)
-
-    console.log(this.state.projectSelected)
 
     const hardcodedProjectName = await contract.methods.getNameByProjectId(hardcodedProjectId).call();
     const decodedProjectName = web3.utils.toAscii(hardcodedProjectName).trim();
-    console.log("Project Id 1 Name in hex format: ",decodedProjectName)
 
     const userProjectIds = await contract.methods.getProjectsByUserId(hardcodedUserAddress).call();
-    console.log("userprojectIds", userProjectIds)
+    const userProjectNames = [];
+    userProjectIds.forEach(async(id) => {
+      let name = await contract.methods.getNameByProjectId(id).call();
+      name = web3.utils.toAscii(name);
+      userProjectNames.push(name);
+    })
 
     const commitMessagesById = await contract.methods.getCommitMessagesByProjectId(hardcodedProjectId).call();
-    console.log("commitsbyid", commitMessagesById.map(c => web3.utils.toAscii(c)))
-
     
     let projectCommits = commitMessagesById.map(c => web3.utils.toAscii(c));
-    console.log(projectCommits)
-  
 
     const commitTimestamps = await contract.methods.getCommitTimestampsByProjectId(hardcodedProjectId).call();
-    console.log("commitTimestamps", commitTimestamps)
 
     const userData = await contract.methods.getUsernameByAddress(hardcodedUserAddress).call();
     const userName =  web3.utils.toAscii(userData);
@@ -97,6 +93,7 @@ class App extends Component {
     }
     this.setState({
       projectName: decodedProjectName,
+      projectNames: userProjectNames,
       projectId: userProjectIds,
       projectCommits,
       commitTimestamps,
@@ -124,6 +121,7 @@ class App extends Component {
     let {
       projectName,
       projectId,
+      projectNames,
       projectCommits,
       projectSelected,
       userName,
@@ -135,11 +133,13 @@ class App extends Component {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     let projects = null;
-    if(projectId){
-      projects = projectId.map( (project, i) => {
+    if(projectNames){
+      projects = projectNames.map( (project, i) => {
+        const selIndex = projectNames.indexOf(projectSelected)
+
         return (
           <Card 
-            className={"flex flex-center" + (projectSelected == project ? ' card-active' : "")} 
+            className={"flex flex-center" + (selIndex === i ? ' card-active' : ' card-inactive')} 
             onClick={() => {this.setState({projectSelected: project}); this.getContractFeeds()}}
             key={i}>
             <div>
