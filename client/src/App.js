@@ -24,6 +24,7 @@ class App extends Component {
       contract: null,
       projectSelected: null,
       projectIdSelected: null,
+      newCommitUpdate: false,
       CodeHeroAddress: "0x2aD97B528791d6d165e9CF2D5ba85F685Bb11E1c" 
     };
     this.onClickSelected = this.onClickSelected.bind(this)
@@ -42,7 +43,6 @@ class App extends Component {
       const accounts = await web3.eth.getAccounts();
 
       // Get the contract instance.
-      const networkId = await web3.eth.net.getId();
 
       const instance = new web3.eth.Contract(
         CodeHeroContract.abi,
@@ -64,13 +64,11 @@ class App extends Component {
 
   getContractFeeds = async () => {
     this.listenEvents();
-    const { accounts, contract, web3 } = this.state;  
+    const { contract, web3 } = this.state;  
     // Just so user address has data, until we assign this to eth.accounts[0] 
     const hardcodedUserAddress = "0xcC4c3FBfA2716D74B3ED6514ca8Ba99d7f941dF9"
     const hardcodedProjectId = "1";
     let currentProjectId = null;
-
-    
 
     const userProjectIds = await contract.methods.getProjectsByUserId(hardcodedUserAddress).call();
     const userProjectNames = [];
@@ -129,6 +127,10 @@ class App extends Component {
   
     contract.once('Commit', (err, result) => {
       this.getContractFeeds();
+      this.setState({ newCommitUpdate: true })
+      setTimeout(() => {
+        this.setState({ newCommitUpdate: false })
+      }, 1000);
     })
 
   }
@@ -156,6 +158,7 @@ class App extends Component {
       projectIdSelected,
       userName,
       commitTimestamps,
+      newCommitUpdate,
       commitMessagesById,
      } = this.state;
     if (!this.state.web3) {
@@ -203,9 +206,12 @@ class App extends Component {
           </FormGroup>
           <div className="content">
             <ProjectData 
+              user={userName}
               selectedId={projectIdSelected} 
               name={projectName} 
-              commits={projectCommits} dates={commitTimestamps} />
+              commits={projectCommits} dates={commitTimestamps} 
+              newCommitUpdate={newCommitUpdate}
+              />
           </div>
         </Container>
       </div>
