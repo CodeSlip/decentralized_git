@@ -63,7 +63,6 @@ const ProjectInfo = (props) =>{
                     {commits}
                 </tbody>
             </Table>
-            <ColoredLine color='#fff'/>
         </div>
     )
 
