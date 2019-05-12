@@ -7,12 +7,13 @@ import ColoredLine from './ColoredLine';
 import web3 from "web3"
 
 const ProjectInfo = (props) =>{
+    console.log("props", props)
     let commits = null;
     
     let commitDate = null;
     
     if(props.dates){
-        commitDate = props.dates.map( date => {
+        commitDate = props.dates.reverse().map( date => {
             return convertTime(date);
         })
     }
@@ -22,7 +23,8 @@ const ProjectInfo = (props) =>{
     const renderedCommits = [];
     
     if(props.commits ){
-        let commitsRev = props.commits.reverse()
+        let commitsRev = props.commits.reverse();
+        console.log("commitsrev", commitsRev)
         commits = commitsRev.map((commit, i) => {
 
             let color = '#' + Math.floor(Math.random()*16777215).toString(16);
