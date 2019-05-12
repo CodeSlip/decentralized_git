@@ -23,6 +23,7 @@ class App extends Component {
       accounts: null, 
       contract: null,
       projectSelected: null,
+      projectIdSelected: null
     };
     this.onClickSelected = this.onClickSelected.bind(this)
 
@@ -65,9 +66,9 @@ class App extends Component {
     // Just so user address has data, until we assign this to eth.accounts[0] 
     const hardcodedUserAddress = "0xcC4c3FBfA2716D74B3ED6514ca8Ba99d7f941dF9"
     const hardcodedProjectId = "1";
+    let currentProjectId = null;
 
-    const hardcodedProjectName = await contract.methods.getNameByProjectId(hardcodedProjectId).call();
-    const decodedProjectName = web3.utils.toAscii(hardcodedProjectName).trim();
+    
 
     const userProjectIds = await contract.methods.getProjectsByUserId(hardcodedUserAddress).call();
     const userProjectNames = [];
@@ -77,20 +78,32 @@ class App extends Component {
       userProjectNames.push(name);
     })
 
-    const commitMessagesById = await contract.methods.getCommitMessagesByProjectId(hardcodedProjectId).call();
+   
+
+    if(this.state.projectSelected == null){
+      this.setState({
+        projectSelected: userProjectNames[0],
+        projectIdSelected: userProjectIds[0]
+      })
+
+      
+    }
+     
+ 
+
+    const hardcodedProjectName = await contract.methods.getNameByProjectId(this.state.projectIdSelected).call();
+    const decodedProjectName = web3.utils.toAscii(hardcodedProjectName);
+
+    const commitMessagesById = await contract.methods.getCommitMessagesByProjectId(this.state.projectIdSelected).call();
     
     let projectCommits = commitMessagesById.map(c => web3.utils.toAscii(c));
 
-    const commitTimestamps = await contract.methods.getCommitTimestampsByProjectId(hardcodedProjectId).call();
+    const commitTimestamps = await contract.methods.getCommitTimestampsByProjectId(this.state.projectIdSelected).call();
 
     const userData = await contract.methods.getUsernameByAddress(hardcodedUserAddress).call();
     const userName =  web3.utils.toAscii(userData);
 
-    if(this.state.projectSelected == null){
-      this.setState({
-        projectSelected: userProjectIds[0]
-      })
-    }
+    
     this.setState({
       projectName: decodedProjectName,
       projectNames: userProjectNames,
@@ -124,11 +137,12 @@ class App extends Component {
       projectNames,
       projectCommits,
       projectSelected,
+      projectIdSelected,
       userName,
       commitTimestamps,
       commitMessagesById,
      } = this.state;
-
+     console.log(this.state)
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
@@ -136,11 +150,12 @@ class App extends Component {
     if(projectNames){
       projects = projectNames.map( (project, i) => {
         const selIndex = projectNames.indexOf(projectSelected)
+        let id = projectId[i]
 
         return (
           <Card 
-            className={"flex flex-center" + (selIndex === i ? ' card-active' : ' card-inactive')} 
-            onClick={() => {this.setState({projectSelected: project}); this.getContractFeeds()}}
+            className={"flex flex-center" + (id === this.state.projectIdSelected ? ' card-active' : ' card-inactive')} 
+            onClick={() => {this.setState({projectSelected: project, projectIdSelected: id}); this.getContractFeeds()}}
             key={i}>
             <div>
               <p>
