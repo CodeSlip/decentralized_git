@@ -298,8 +298,8 @@ node.once('ready', async () => {
   })
 let newHash = "typeface"
 let convertedHash = web3.utils.fromAscii(newHash);
-let unCovertedMessage = "Updating core repository";
-let convertedMessage = web3.utils.fromAscii("Updating core repository");
+let unCovertedMessage = "Bullish on bitcoin";
+let convertedMessage = web3.utils.fromAscii("This is the submission data");
 var contractInstance = new web3.eth.Contract(abi, contractAddress);
 let encodedABI = contractInstance.methods.commitCode(1, convertedHash, convertedMessage).encodeABI();
 let nonce = await web3.eth.getTransactionCount(addressFrom);
