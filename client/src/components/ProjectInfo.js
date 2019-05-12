@@ -2,6 +2,7 @@ import React from 'react';
 import {Table} from 'reactstrap';
 import Blockies from 'react-blockies';
 import convertTime from '../utils/convertTime'
+import ColoredLine from './ColoredLine';
 
 
 const ProjectInfo = (props) =>{
@@ -61,6 +62,7 @@ const ProjectInfo = (props) =>{
                     {commits}
                 </tbody>
             </Table>
+            <ColoredLine color='#fff'/>
         </div>
     )
 

@@ -4,7 +4,7 @@ html {
 
 .App {
   /* text-align: center; */
-  background: black;
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,85,1) 35%, rgba(0,0,0,1) 100%);
   color: white;
 }
 
@@ -19,7 +19,8 @@ html {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 1.5px;
-  text-shadow: 0px 0px 1px #282c34
+  text-shadow: 1px 1px 1px #282c34;
+  font-size: 1.75em;
 }
 
 .App-header {
@@ -114,6 +115,8 @@ html {
   height: 100px;
   border-radius: 8px;
   margin: 10px;
+  font-size: 1.20em;
+  font-weight: bold;
 }
 
 .card:hover{
@@ -131,6 +134,7 @@ html {
   color: #fff;
   font-weight: 700;
   font-size: 18px;
+  font-size: 1.20em;
 }
 
 .card-inactive {
