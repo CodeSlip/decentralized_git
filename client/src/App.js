@@ -99,7 +99,10 @@ class App extends Component {
     
     let projectCommits = commitMessagesById.map(c => web3.utils.toAscii(c));
   
+<<<<<<< HEAD
 
+=======
+>>>>>>> 359b5c8c67c36afebc47da2aef75e978dfc80c51
     const commitTimestamps = await contract.methods.getCommitTimestampsByProjectId(this.state.projectIdSelected).call();
 
     const userData = await contract.methods.getUsernameByAddress(hardcodedUserAddress).call();

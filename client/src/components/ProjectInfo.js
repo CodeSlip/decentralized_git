@@ -2,6 +2,8 @@ import React from 'react';
 import {Table} from 'reactstrap';
 import Blockies from 'react-blockies';
 import convertTime from '../utils/convertTime'
+import ColoredLine from './ColoredLine';
+
 import web3 from "web3";
 
 const ProjectInfo = (props) =>{
@@ -17,11 +19,11 @@ const ProjectInfo = (props) =>{
             return convertTime(date);
         })
     }
-    console.log(web3)
-
-
+    
+    
     if(props.commits ){
         commits = props.commits.map((commit, i) => {
+            const id = web3.utils.fromAscii(commit).slice(7, 13);
             return(
                 <tr key={i} className="commit-card">
                     <td>
@@ -36,7 +38,7 @@ const ProjectInfo = (props) =>{
                         />
                         <p className="text-center username">name</p>
                     </td>
-                    <td>id</td>
+                    <td>{id}</td>
                     <td>{commit}</td>
                     <td>{commitDate[i]}</td>
                 </tr>
@@ -61,6 +63,7 @@ const ProjectInfo = (props) =>{
                     {commits}
                 </tbody>
             </Table>
+            <ColoredLine color='#fff'/>
         </div>
     )
 
