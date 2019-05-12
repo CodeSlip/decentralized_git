@@ -101,7 +101,6 @@ class App extends Component {
       commitMessagesById,
       userName
     });
-  }
 
 
     contract.once('ProjectCreated', (err, result) => {
