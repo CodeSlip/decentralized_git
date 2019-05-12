@@ -268,12 +268,11 @@ const abi =  [
 	}
 ];
 const contractAddress = '0x2aD97B528791d6d165e9CF2D5ba85F685Bb11E1c';
-let storedHash = null;
 const node = new IPFS()
 
 const init = () => {
     console.log(
-      chalk.green(
+      chalk.blue(
         figlet.textSync("CODE HERO", {
           font: "big",
           horizontalLayout: "default",
@@ -288,27 +287,28 @@ init();
 let directory = process.cwd();
 let file = `${directory}/READ.ME`;
 let bufferedFile = new Buffer.from(file, 'hex')
-node.once('ready', () => {
-    node.add(bufferedFile, (err, files) => {
+let storedHash;
+node.once('ready', async () => {
+    let result = await node.add(bufferedFile, (err, files) => {
       if (err) return console.error(err)
-      console.log(files[0].hash)
-      return storedHash = files[0].hash
+      return files[0].hash
     })
+    storedHash = result;
+    return storedHash
   })
-
-let newHash = "make it rain"
+let newHash = "typeface"
 let convertedHash = web3.utils.fromAscii(newHash);
-let convertedMessage = web3.utils.fromAscii("Fixed merge error");
+let unCovertedMessage = "Updating core repository";
+let convertedMessage = web3.utils.fromAscii("Updating core repository");
 var contractInstance = new web3.eth.Contract(abi, contractAddress);
 let encodedABI = contractInstance.methods.commitCode(1, convertedHash, convertedMessage).encodeABI();
 let nonce = await web3.eth.getTransactionCount(addressFrom);
-
 let tx = {
     nonce: web3.utils.toHex(nonce),
     from: addressFrom,
     to: contractAddress,
-    gas: 4700000,
-    gasPrice: 4700000,
+    gas: 6000000,
+    gasPrice: 6000000,
     data: encodedABI,
 }
 var transaction = new EthereumTx(tx);
@@ -320,20 +320,18 @@ web3.eth.sendSignedTransaction("0x" + serializedTx.toString('hex'), (_err, _res)
     if(_err){
         console.error("ERROR: ", _err);
     } else {
-        console.log("Success: ", _res);
+        console.log(
+            chalk.green(
+              figlet.textSync("SUCCESS", {
+                font: "big",
+                horizontalLayout: "default",
+                verticalLayout: "default"
+              })
+            )
+          );
+        console.log("Tx: "+ _res+'\n'+"Commit: "+ unCovertedMessage +'\n'+ "Your Code is up to date, thanks for using Code Hero");
     }
-}).on('confirmation', (confirmationNumber, receipt) => {
-    console.log('=> confirmation: ' + confirmationNumber);
 })
-.on('transactionHash', hash => {
-    console.log('=> hash');
-    console.log(hash);
-})
-.on('receipt', receipt => {
-    console.log('=> reciept');
-    console.log(receipt);
-})
-.on('error', console.error);
 };
 
 run();
