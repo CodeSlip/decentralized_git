@@ -98,11 +98,7 @@ class App extends Component {
     const commitMessagesById = await contract.methods.getCommitMessagesByProjectId(this.state.projectIdSelected).call();
     
     let projectCommits = commitMessagesById.map(c => web3.utils.toAscii(c));
-<<<<<<< HEAD
   
-=======
-    console.log("commits",projectCommits, this.state.projectIdSelected)
->>>>>>> ui
 
     const commitTimestamps = await contract.methods.getCommitTimestampsByProjectId(this.state.projectIdSelected).call();
 
