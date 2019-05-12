@@ -15,7 +15,7 @@ const ProjectInfo = (props) =>{
     let commitDate = null;
 
     if(props.dates){
-        commitDate = props.dates.reverse().map( date => {
+        commitDate = props.dates.map( date => {
             return convertTime(date);
         })
     }
@@ -24,7 +24,7 @@ const ProjectInfo = (props) =>{
     if(props.commits ){
         console.log(props.commits);
         let commitsRev = props.commits.reverse()
-        commits = commitsRev.map((commit, i) => {
+        commits = props.commits.map((commit, i) => {
             const id = web3.utils.fromAscii(commit).slice(7, 13);
             return(
                 <tr key={i} className="commit-card">

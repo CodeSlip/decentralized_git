@@ -110,8 +110,8 @@ class App extends Component {
       projectName: decodedProjectName,
       projectNames: userProjectNames,
       projectId: userProjectIds,
-      projectCommits,
-      commitTimestamps,
+      projectCommits:projectCommits.reverse(),
+      commitTimestamps: commitTimestamps.reverse(),
       commitMessagesById,
       userName
     });
