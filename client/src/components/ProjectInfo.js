@@ -2,7 +2,7 @@ import React from 'react';
 import {Table} from 'reactstrap';
 import Blockies from 'react-blockies';
 import convertTime from '../utils/convertTime'
-
+import web3 from "web3";
 
 const ProjectInfo = (props) =>{
     let commits = null;
@@ -18,6 +18,7 @@ const ProjectInfo = (props) =>{
             return convertTime(date);
         })
     }
+    console.log(web3)
 
 
     if(props.commits ){
