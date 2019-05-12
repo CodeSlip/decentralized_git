@@ -6,8 +6,7 @@ import {
   FormGroup, 
   Navbar, 
   Card,
-  CardBody,
-  CardTitle
+
 } from 'reactstrap'
 import getWeb3 from "./utils/getWeb3";
 
@@ -69,7 +68,7 @@ class App extends Component {
     console.log("contract", contract)
 
     const hardcodedProjectName = await contract.methods.getNameByProjectId(hardcodedProjectId).call();
-    const decodedProjectName = web3.utils.toAscii(hardcodedProjectName)
+    const decodedProjectName = web3.utils.toAscii(hardcodedProjectName).trim();
     console.log("Project Id 1 Name in hex format: ",decodedProjectName)
 
     const userProjectIds = await contract.methods.getProjectsByUserId(hardcodedUserAddress).call();
@@ -78,21 +77,30 @@ class App extends Component {
     const commitMessagesById = await contract.methods.getCommitMessagesByProjectId(hardcodedProjectId).call();
     console.log("commitsbyid", commitMessagesById.map(c => web3.utils.toAscii(c)))
     let projectCommits = commitMessagesById.map(c => web3.utils.toAscii(c));
-
-    this.setState({
-      projectName: decodedProjectName,
-      projectId: userProjectIds,
-      projectCommits
-    });
+    console.log(projectCommits)
+  
 
     const commitTimestamps = await contract.methods.getCommitTimestampsByProjectId(hardcodedProjectId).call();
     console.log("commitTimestamps", commitTimestamps)
 
+    const userData = await contract.methods.getUsernameByAddress(hardcodedUserAddress).call();
+    const userName =  web3.utils.toAscii(userData);
+
+    // this.setState({
+    //   projectName: decodedProjectName,
+    //   projectId: userProjectIds,
+    //   // projectCommits: commitsById
+    // })
+
     this.setState({
       projectName: decodedProjectName,
       projectId: userProjectIds,
-      // projectCommits: commitsById
-    })
+      projectCommits,
+      commitTimestamps,
+      commitMessagesById,
+      userName,
+
+    });
 
   }
 
@@ -110,7 +118,10 @@ class App extends Component {
       projectName,
       projectId,
       projectCommits,
-      projectSelected
+      projectSelected,
+      userName,
+      commitTimestamps,
+      commitMessagesById
      } = this.state;
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
@@ -120,9 +131,9 @@ class App extends Component {
     if(projectId){
       projects = projectId.map( (project, i) => {
         return (
-          <Card className="flex flex-center card-active" key={i}>
-            <div >
-              <p >
+          <Card className="flex flex-center " key={i}>
+            <div>
+              <p>
                 {project}
               </p>
             </div>
@@ -133,20 +144,20 @@ class App extends Component {
       <div className="App">
         <Navbar>
           <Container>
-            <h3>Code Hero</h3>
-            <p className="lead">Welcome, User Name</p>
+            <h3 className="logo">Code Hero</h3>
+            <p className="lead">Welcome, {userName}</p>
           </Container>
         </Navbar>
           
-        <Container className="">
+        <Container className="main">
           <FormGroup >
-            <Label className="text-left">Select Project</Label>
+            <Label className="text-left text-bold">Select Project</Label>
             <div className="flex project-list">
               {projects}
             </div>
           </FormGroup>
           <div className="content">
-            <ProjectData name={projectName} commits={projectCommits}/>
+            <ProjectData name={projectName} commits={projectCommits} dates={commitTimestamps} messages={commitMessagesById}/>
           </div>
         </Container>
       </div>

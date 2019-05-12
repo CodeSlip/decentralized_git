@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table} from 'reactstrap';
 import Blockies from 'react-blockies';
+import convertTime from '../utils/convertTime'
 
 
 const ProjectInfo = (props) =>{
@@ -9,7 +10,20 @@ const ProjectInfo = (props) =>{
     let bgColor = '#' + Math.floor(Math.random()*16777215).toString(16);
     let spotColor = '#' + Math.floor(Math.random()*16777215).toString(16);
 
-    if(props.commits){
+    let commitDate = null;
+    let messages = null;
+
+    if(props.dates){
+        commitDate = props.dates.map( date => {
+            return convertTime(date);
+        })
+    }
+    if(props.messages){
+        messages = props.messages;
+    }
+
+
+    if(props.commits ){
         commits = props.commits.map((commit, i) => {
             return(
                 <tr key={i} className="commit-card">
@@ -26,7 +40,9 @@ const ProjectInfo = (props) =>{
                         <p className="text-center username">name</p>
                     </td>
                     <td>{commit}</td>
-                    <td>description</td>
+                    <td>{messages[i]}</td>
+                    <td>{commitDate[i]}</td>
+
                 </tr>
             )
         })
@@ -42,6 +58,8 @@ const ProjectInfo = (props) =>{
                         <th style={{width: "80px"}}>Users</th>
                         <th style={{width: "25%"}}>Commits</th>
                         <th>Description</th>
+                        <th>Date</th>
+
                     </tr>
                 </thead>
                 <tbody>
