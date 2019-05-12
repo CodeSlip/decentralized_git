@@ -105,6 +105,12 @@ html {
   box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.21);
   margin: 10px;
 }
+
+.commit-card-flash {
+  background: white;
+  color: black;
+}
+
 .commit-card td{
   vertical-align: middle;
 }
