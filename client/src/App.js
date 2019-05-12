@@ -63,6 +63,7 @@ class App extends Component {
   };
 
   getContractFeeds = async () => {
+    this.listenEvents();
     const { accounts, contract, web3 } = this.state;  
     // Just so user address has data, until we assign this to eth.accounts[0] 
     const hardcodedUserAddress = "0xcC4c3FBfA2716D74B3ED6514ca8Ba99d7f941dF9"
@@ -114,21 +115,22 @@ class App extends Component {
       commitMessagesById,
       userName
     });
-
-
+  }
+  
+  listenEvents = () => {
+    const { contract } = this.state;
     contract.once('ProjectCreated', (err, result) => {
       console.log("** Project Created ** ", result)
     })
-
+  
     contract.once('UserInvited', (err, result) => {
       console.log("** User Invited ** ", result)
     })
-
+  
     contract.once('Commit', (err, result) => {
-      console.log("** Code Committed ** ", result)
+      this.getContractFeeds();
     })
 
-    console.log("web3", await web3.eth.accounts.wallet)
   }
   
   onClickSelected = (projectSelected) => {
@@ -208,7 +210,6 @@ class App extends Component {
         </Container>
       </div>
     )
-
   }
 }
 
