@@ -22,7 +22,9 @@ const ProjectInfo = (props) =>{
     
     
     if(props.commits ){
-        commits = props.commits.map((commit, i) => {
+        console.log(props.commits);
+        let commitsRev = props.commits.reverse()
+        commits = commitsRev.map((commit, i) => {
             const id = web3.utils.fromAscii(commit).slice(7, 13);
             return(
                 <tr key={i} className="commit-card">
