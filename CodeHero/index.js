@@ -6,18 +6,270 @@ const fs = require('fs');
 const path = require('path');
 const Web3 = require('web3')
 const Tx = require('ethereumjs-tx')
-const IPFS = require('ipfs-api');
+const IPFS = require('ipfs');
 const FileReader = require('filereader');
-const Buffer = require('safe-buffer');
 const alloc = require('buffer-alloc');
+// var Buffer = require('buffer/').Buffer
+var ipfsClient = require('ipfs-http-client');
+const EthereumTx = require('ethereumjs-tx');
 
-const ipfs = new IPFS({host:'ipfs.infura.io', port:'5001', protocol:'https'});
 const web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/v3/1bbaf6af867f4c289cae07c220e77a10'));
 const addressFrom = '0xA53EEf10271C5456a377f1A5D39b4961ba8C83D5';
 const privKey = '3ADFC1DA4DE404677C7800CE3F71BE423F56459EFAFFD5DAA612F1915F77E5C6';
-const addressTo = '0xcC4c3FBfA2716D74B3ED6514ca8Ba99d7f941dF9'; 
+const addressTo = '0xcC4c3FBfA2716D74B3ED6514ca8Ba99d7f941dF9';
+const abi =  [
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_username",
+				"type": "bytes32"
+			}
+		],
+		"name": "addUsername",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_projectId",
+				"type": "uint256"
+			},
+			{
+				"name": "_newHash",
+				"type": "bytes32"
+			},
+			{
+				"name": "_commitMessage",
+				"type": "bytes32"
+			}
+		],
+		"name": "commitCode",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_name",
+				"type": "bytes32"
+			}
+		],
+		"name": "createProject",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_projectId",
+				"type": "uint256"
+			},
+			{
+				"name": "_teammate",
+				"type": "address"
+			}
+		],
+		"name": "inviteTeammate",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "_creator",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "_projectId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "_name",
+				"type": "bytes32"
+			}
+		],
+		"name": "ProjectCreated",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "_invitee",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "_inviter",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "_projectId",
+				"type": "uint256"
+			}
+		],
+		"name": "UserInvited",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "_projectId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "_user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "_message",
+				"type": "bytes32"
+			}
+		],
+		"name": "Commit",
+		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_projectId",
+				"type": "uint256"
+			}
+		],
+		"name": "getCommitMessagesByProjectId",
+		"outputs": [
+			{
+				"name": "commits",
+				"type": "bytes32[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_projectId",
+				"type": "uint256"
+			}
+		],
+		"name": "getCommitTimestampsByProjectId",
+		"outputs": [
+			{
+				"name": "timestamps",
+				"type": "uint256[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_projectId",
+				"type": "uint256"
+			}
+		],
+		"name": "getNameByProjectId",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_user",
+				"type": "address"
+			}
+		],
+		"name": "getProjectsByUserId",
+		"outputs": [
+			{
+				"name": "projectIds",
+				"type": "uint256[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "getUsernameByAddress",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_projectId",
+				"type": "uint256"
+			}
+		],
+		"name": "getUsersByProjectId",
+		"outputs": [
+			{
+				"name": "userIds",
+				"type": "address[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+const contractAddress = '0x2aD97B528791d6d165e9CF2D5ba85F685Bb11E1c';
 let storedHash = null;
-const ipfsUrl = 'https://ipfs.infura.io:5001/api/v0/add?pin=false';
+const node = new IPFS()
 
 const init = () => {
     console.log(
@@ -31,93 +283,57 @@ const init = () => {
     );
 }
 
-// captureFile = () => {
-//     event.stopPropagation()
-//     event.preventDefault()
-//     const file = event.target.files[0]
-//     let reader = new window.FileReader()
-//     reader.readAsArrayBuffer(file)
-//     reader.onloadend = () => this.convertToBuffer(reader)    
-//   };
-
-// function readFilesSync(dir) {
-//     const files = [];
-//     fs.readdirSync(dir).forEach(filename => {
-//         const name = path.parse(filename).name;
-//         const ext = path.parse(filename).ext;
-//         const filepath = path.resolve(dir, filename);
-//         const stat = fs.statSync(filepath);
-//         const isFile = stat.isFile();
-//         if (isFile) files.push({ filepath, name, ext, stat });
-//     });
-//     files.sort((a, b) => {
-//         return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
-//     });
-//     console.log(files);
-//     return files;
-// }
-
-// function sendSigned(txData, cb) {
-//     const privateKey = new Buffer(privKey, 'hex')
-//     const transaction = new Tx(txData)
-//     transaction.sign(privateKey)
-//     const serializedTx = transaction.serialize().toString('hex')
-//     web3.eth.sendSignedTransaction('0x' + serializedTx, cb);
-// }
-
-convertToBuffer = async(reader) => {
-    //file is converted to a buffer to prepare for uploading to IPFS
-      const bufferedFile = await Buffer.from(reader.result);
-    //set this buffer -using es6 syntax
-      return bufferedFile;
-  };
-
 const run = async () => {
 init();
-//connect web3 and get information from chain
 let directory = process.cwd();
-let files = `${directory}/READ.ME`;
-let bufferedFile = alloc(10, files)
-let ipfsData = {
-    'cid-version': 0,
-    'file': `/${directory}/READ.ME`
+let file = `${directory}/READ.ME`;
+let bufferedFile = new Buffer.from(file, 'hex')
+node.once('ready', () => {
+    node.add(bufferedFile, (err, files) => {
+      if (err) return console.error(err)
+      console.log(files[0].hash)
+      return storedHash = files[0].hash
+    })
+  })
+
+let newHash = "make it rain"
+let convertedHash = web3.utils.fromAscii(newHash);
+let convertedMessage = web3.utils.fromAscii("Fixed merge error");
+var contractInstance = new web3.eth.Contract(abi, contractAddress);
+let encodedABI = contractInstance.methods.commitCode(1, convertedHash, convertedMessage).encodeABI();
+let nonce = await web3.eth.getTransactionCount(addressFrom);
+
+let tx = {
+    nonce: web3.utils.toHex(nonce),
+    from: addressFrom,
+    to: contractAddress,
+    gas: 4700000,
+    gasPrice: 4700000,
+    data: encodedABI,
 }
-axios({
-    method: 'post',
-    url: ipfsUrl,
-    data: {
-        file: '@'+`${files}`
+var transaction = new EthereumTx(tx);
+const privateKey = new Buffer.from(privKey, 'hex')
+transaction.sign(privateKey)
+const serializedTx = transaction.serialize();
+
+web3.eth.sendSignedTransaction("0x" + serializedTx.toString('hex'), (_err, _res) => {
+    if(_err){
+        console.error("ERROR: ", _err);
+    } else {
+        console.log("Success: ", _res);
     }
-}).then(data=> console.log(data)).catch(err => console.log(err))
-// let reader = new FileReader();
-// let bufferedFile;
-// reader.readAsArrayBuffer(file);
-// reader.onloadend = () => {
-//     bufferedFile = Buffer.from(reader.result);
-// }
-// ipfs.add(bufferedFile, (err, ipfsHash) => {
-//     // console.log(err, ipfsHash);
-//     //setState by setting ipfsHash to ipfsHash[0].hash 
-//     storedHash = ipfsHash[0].hash;
-//     })
-//     console.log(storedHash);
-// web3.eth.getTransactionCount(addressFrom).then(txCount => {
-//     // construct the transaction data
-//     const txData = {
-//         nonce: web3.utils.toHex(txCount),
-//         gasLimit: web3.utils.toHex("25000000000"),
-//         gasPrice: web3.utils.toHex("25000000000"), // 10 Gwei
-//         to: addressTo,
-//         from: addressFrom,
-//         value: web3.utils.toHex(web3.utils.toWei("25000000000", 'wei'))
-//     }
-//     // fire away!
-//     sendSigned(txData, function(err, result) {
-//         if (err) return console.log('error', err)
-//         console.log('sent', result)
-//         })
-//         console.log("here's the data",txData)
-//     })
+}).on('confirmation', (confirmationNumber, receipt) => {
+    console.log('=> confirmation: ' + confirmationNumber);
+})
+.on('transactionHash', hash => {
+    console.log('=> hash');
+    console.log(hash);
+})
+.on('receipt', receipt => {
+    console.log('=> reciept');
+    console.log(receipt);
+})
+.on('error', console.error);
 };
 
 run();

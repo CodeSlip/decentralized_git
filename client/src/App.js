@@ -203,6 +203,7 @@ class App extends Component {
           </FormGroup>
           <div className="content">
             <ProjectData 
+              user={userName}
               selectedId={projectIdSelected} 
               name={projectName} 
               commits={projectCommits} dates={commitTimestamps} />
