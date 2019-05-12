@@ -18,9 +18,6 @@ const ProjectInfo = (props) =>{
             return convertTime(date);
         })
     }
-    if(props.messages){
-        messages = props.messages;
-    }
 
 
     if(props.commits ){
@@ -39,10 +36,9 @@ const ProjectInfo = (props) =>{
                         />
                         <p className="text-center username">name</p>
                     </td>
+                    <td>id</td>
                     <td>{commit}</td>
-                    <td>{messages[i]}</td>
                     <td>{commitDate[i]}</td>
-
                 </tr>
             )
         })
@@ -56,17 +52,14 @@ const ProjectInfo = (props) =>{
                 <thead>
                     <tr>
                         <th style={{width: "80px"}}>Users</th>
-                        <th style={{width: "25%"}}>Commits</th>
+                        <th style={{width: "25%"}}>Commit</th>
                         <th>Description</th>
                         <th>Date</th>
-
                     </tr>
                 </thead>
                 <tbody>
                     {commits}
                 </tbody>
-
-
             </Table>
         </div>
     )

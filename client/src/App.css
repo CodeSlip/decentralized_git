@@ -1,5 +1,11 @@
+html {
+  background: black;
+}
+
 .App {
   /* text-align: center; */
+  background: black;
+  color: white;
 }
 
 .App-logo {
@@ -40,7 +46,6 @@
   }
 }
 
-
 /* Template */
 .navbar{
   background-color: #68DAA6;
@@ -74,6 +79,10 @@
   font-weight: 700;
 }
 
+.table {
+  color: white;
+}
+
 /* Project Table */
 .repo-name{
   text-align: left;
@@ -84,6 +93,9 @@
   border-radius: 8px;
   box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.21);
   margin: 10px;
+}
+.commit-card td{
+  vertical-align: middle;
 }
 
 .identicon{
@@ -105,7 +117,7 @@
 }
 
 .card:hover{
-  box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.21);
+  box-shadow: 1px 1px 8px #68DAA6;
 }
 
 .card p{
@@ -114,7 +126,15 @@
 }
 
 .card-active{
-  box-shadow: 1px 1px 8px  #68DAA6;
+  box-shadow: 0px 1px 10px  #bbb;
+  background-color: #68DAA6;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.card-inactive {
+  color: black;
 }
 
 
