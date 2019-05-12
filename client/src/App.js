@@ -23,7 +23,7 @@ class App extends Component {
       accounts: null, 
       contract: null,
       projectSelected: null,
-      CodeHeroAddress: "0x409eA381663d17Bf44efdEf5c1DB4f10a69cA3c9" 
+      CodeHeroAddress: "0x2aD97B528791d6d165e9CF2D5ba85F685Bb11E1c" 
     };
 
     this.handleChange = this.handleChange.bind(this);   
