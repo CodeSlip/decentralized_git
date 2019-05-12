@@ -44,6 +44,6 @@
     "web3": "^1.0.0-beta.55"
   },
   "bin": {
-    "codehero": "./index.js"
+    "codehero commit": "./index.js"
   }
 }
