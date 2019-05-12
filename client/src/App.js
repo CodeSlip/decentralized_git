@@ -6,7 +6,6 @@ import {
   FormGroup, 
   Navbar, 
   Card,
-  Input
 
 } from 'reactstrap'
 import getWeb3 from "./utils/getWeb3";
@@ -25,6 +24,7 @@ class App extends Component {
       contract: null,
       projectSelected: null,
     };
+    this.onClickSelected = this.onClickSelected.bind(this)
 
   }
 
@@ -90,23 +90,19 @@ class App extends Component {
     const userData = await contract.methods.getUsernameByAddress(hardcodedUserAddress).call();
     const userName =  web3.utils.toAscii(userData);
 
-    let projectSelected = null;
     if(this.state.projectSelected == null){
-      projectSelected = userProjectIds[0]
       this.setState({
-        projectSelected
+        projectSelected: userProjectIds[0]
       })
-  }
-  this.setState({
-    projectName: decodedProjectName,
-    projectId: userProjectIds,
-    projectCommits,
-    commitTimestamps,
-    commitMessagesById,
-    userName
-  });
-
-
+    }
+    this.setState({
+      projectName: decodedProjectName,
+      projectId: userProjectIds,
+      projectCommits,
+      commitTimestamps,
+      commitMessagesById,
+      userName
+    });
   }
 
 
@@ -118,7 +114,9 @@ class App extends Component {
       console.log("after",this.state.projectSelected);
   });
     this.getContractFeeds()
-    console.log("clicked")
+    // console.log("clicked")
+    console.log("after after",this.state.projectSelected);
+
   }
 
 
@@ -137,6 +135,21 @@ class App extends Component {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     let projects = null;
+    if(projectId){
+      projects = projectId.map( (project, i) => {
+        return (
+          <Card 
+            className={"flex flex-center" + (projectSelected == project ? ' card-active' : "")} 
+            onClick={() => {this.setState({projectSelected: project}); this.getContractFeeds()}}
+            key={i}>
+            <div>
+              <p>
+                {project} 
+              </p>
+            </div>
+          </Card>
+        )}
+      )}
 
 
     return (
@@ -151,28 +164,15 @@ class App extends Component {
         <Container className="main">
           <FormGroup >
             <Label className="text-left text-bold">Select Project</Label>
-            <div >
-              
-   { projectId ?
-      <div className="flex project-list">
-      {projectId.map( (project, i) => 
-          <Card 
-            className={"flex flex-center" + (projectSelected == project ? ' card-active' : "")} 
-            onClick={() => this.onClickSelected(project)}
-            key={i}>
-            <div>
-              <p>
-                {project} 
-              </p>
-            </div>
-          </Card>
-      )}
-      </div>
-    : null}
+            <div className="flex project-list" >
+              {projects}
             </div>
           </FormGroup>
           <div className="content">
-            <ProjectData selectedId={projectSelected} name={projectName} commits={projectCommits} dates={commitTimestamps} />
+            <ProjectData 
+              selectedId={projectSelected} 
+              name={projectName} 
+              commits={projectCommits} dates={commitTimestamps} />
           </div>
         </Container>
       </div>
