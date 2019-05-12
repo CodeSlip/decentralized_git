@@ -11,7 +11,6 @@ const ProjectInfo = (props) =>{
     let spotColor = '#' + Math.floor(Math.random()*16777215).toString(16);
 
     let commitDate = null;
-    let messages = null;
 
     if(props.dates){
         commitDate = props.dates.map( date => {

@@ -97,6 +97,7 @@ class App extends Component {
     const commitMessagesById = await contract.methods.getCommitMessagesByProjectId(this.state.projectIdSelected).call();
     
     let projectCommits = commitMessagesById.map(c => web3.utils.toAscii(c));
+    console.log("commits",projectCommits, this.state.projectIdSelected)
 
     const commitTimestamps = await contract.methods.getCommitTimestampsByProjectId(this.state.projectIdSelected).call();
 
@@ -142,7 +143,6 @@ class App extends Component {
       commitTimestamps,
       commitMessagesById,
      } = this.state;
-     console.log(this.state)
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
@@ -185,7 +185,7 @@ class App extends Component {
           </FormGroup>
           <div className="content">
             <ProjectData 
-              selectedId={projectSelected} 
+              selectedId={projectIdSelected} 
               name={projectName} 
               commits={projectCommits} dates={commitTimestamps} />
           </div>
