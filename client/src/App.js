@@ -75,9 +75,8 @@ class App extends Component {
     console.log("userprojectIds", userProjectIds)
 
     const commitMessagesById = await contract.methods.getCommitMessagesByProjectId(hardcodedProjectId).call();
-    console.log("commitsbyid", commitMessagesById.map(c => web3.utils.toAscii(c)))
     let projectCommits = commitMessagesById.map(c => web3.utils.toAscii(c));
-    console.log(projectCommits)
+    console.log("projectCommits", projectCommits)
   
 
     const commitTimestamps = await contract.methods.getCommitTimestampsByProjectId(hardcodedProjectId).call();
@@ -118,6 +117,8 @@ class App extends Component {
     contract.once('Commit', (err, result) => {
       console.log("** Code Committed ** ", result)
     })
+
+    console.log("web3", await web3.eth.accounts.wallet)
   }
 
   // Listen for input changes
@@ -139,13 +140,14 @@ class App extends Component {
       commitTimestamps,
       commitMessagesById
      } = this.state;
+
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
 
     let projects = null;
     if(projectId){
-      projects = projectId.map( (project, i) => {
+      projects = projectId.map((project, i) => {
         return (
           <Card className="flex flex-center " key={i}>
             <div>
