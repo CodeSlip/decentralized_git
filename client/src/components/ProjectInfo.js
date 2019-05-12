@@ -38,7 +38,7 @@ const ProjectInfo = (props) =>{
                             spotColor={spotColor} 
                             className="identicon" 
                         />
-                        <p className="text-center username">name</p>
+                        <p className="text-center username">{props.user}</p>
                     </td>
                     <td>#{id}</td>
                     <td>{commit}</td>
