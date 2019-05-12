@@ -4,6 +4,7 @@ import Blockies from 'react-blockies';
 import convertTime from '../utils/convertTime'
 import ColoredLine from './ColoredLine';
 
+import web3 from "web3";
 
 const ProjectInfo = (props) =>{
     let commits = null;
@@ -12,13 +13,13 @@ const ProjectInfo = (props) =>{
     let spotColor = '#' + Math.floor(Math.random()*16777215).toString(16);
 
     let commitDate = null;
-    let messages = null;
 
     if(props.dates){
         commitDate = props.dates.map( date => {
             return convertTime(date);
         })
     }
+    console.log(web3)
 
 
     if(props.commits ){
